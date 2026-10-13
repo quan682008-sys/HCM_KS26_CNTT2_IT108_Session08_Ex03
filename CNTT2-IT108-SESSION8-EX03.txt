@@ -1,0 +1,24 @@
+﻿1. Phân tích
+Pipeline (|) giúp nối nhiều lệnh thành một chuỗi xử lý tự động. Trong PowerShell, dữ liệu truyền qua Pipeline là các object, giúp lọc và đếm kết quả thuận tiện hơn.
+Sơ đồ luồng dữ liệu:
+Đọc tệp log
+    |
+    v
+Lọc dòng chứa "TIMEOUT"
+    |
+    v
+Loại bỏ dòng "NOT TIMEOUT"
+    |
+    v
+Đếm số kết quả
+    |
+    v
+Trả về tổng số sự cố
+2. Triển khai
+Sử dụng câu lệnh PowerShell sau:
+(Select-String -Path ".\access.log" -Pattern "TIMEOUT" | Where-Object { $_.Line -notmatch "NOT TIMEOUT" }).Count
+Giải thích:
+* Select-String: Tìm các dòng chứa từ khóa TIMEOUT.
+* Where-Object: Loại bỏ các dòng có chứa NOT TIMEOUT.
+* .Count: Đếm số dòng kết quả và trả về tổng số sự cố.
+Lệnh trên không phân biệt chữ hoa và chữ thường theo mặc định. Kết quả trả về là một con số tổng duy nhất, không in ra hàng nghìn dòng log.
